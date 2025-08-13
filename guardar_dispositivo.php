@@ -12,7 +12,7 @@ $password = $data['password'];
 $deviceId = $data['deviceId'];
 
 // Ruta al JSON de contraseñas
-$archivo = __DIR__ . '/contraseñas.json';
+$archivo = __DIR__ . '/../private/contraseñas.json';
 
 
 // Leer el JSON
@@ -47,6 +47,7 @@ if (empty($contraseñas[$password]['dispositivo'])) {
     }
 }
 ?>
+
 
 
 
