@@ -65,7 +65,7 @@ function checkPassword() {
         return;
     }
 
-    fetch("contraseñas.json")
+    fetch("vip.json")
     .then(res => res.json())
     .then(data => {
         const info = data[password];
@@ -109,3 +109,4 @@ function checkPassword() {
 
 </body>
 </html>
+
