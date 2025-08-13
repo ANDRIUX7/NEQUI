@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Acceso Privado</title>
+<link rel="shortcut icon" href="https://raw.githubusercontent.com/ANDRIUX7/VIP.COM/refs/heads/main/Hacker.ico" type="image/x-icon">
+<title>NEQUI</title>
 <style>
     body {
         background-color: #121212;
@@ -43,8 +44,8 @@
 <body>
 
 <div class="container">
-    <h2>🔒 Acceso Privado</h2>
-    <input type="password" id="password" placeholder="Contraseña VIP" autocomplete="off">
+    <h2>Acceso Privado</h2>
+    <input type="password" id="password" placeholder="Contraseña" autocomplete="off">
     <br>
     <button class="btn btn-enter" onclick="checkPassword()">Entrar</button>
     <p class="error" id="errorMsg"></p>
@@ -74,28 +75,19 @@ function checkPassword() {
         // Buscar dentro del array
         const info = data.find(item => item.contraseña === password);
 
-        // Si no existe en el JSON
         if (!info) {
-            errorMsg.innerText = "❌ Contraseña incorrecta";
-            errorMsg.style.display = "block";
-            whatsappBtn.style.display = "inline-block";
-            whatsappBtn.href = "https://wa.me/573144474637?text=Hola%20Andriux%20quiero%20la%20contraseña%20VIP";
-            passInput.value = "";
-            passInput.focus();
+            mostrarError("❌ Contraseña incorrecta Contacta a Andriux", 
+                         "https://wa.me/573144474637?text=Hola%20Andriux%20quiero%20la%20contraseña%20VIP");
             return;
         }
 
-        // Validar fecha de expiración
-        const ahora = new Date();
-        const expira = new Date(info.fecha_vencimiento);
+        // Obtener fecha actual en hora Colombia (GMT-5)
+        const ahoraColombia = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Bogota" }));
+        const expira = new Date(info.fecha_vencimiento.replace(" ", "T") + "-05:00");
 
-        if (ahora > expira) {
-            errorMsg.innerText = "⏳ Tu contraseña ha vencido, contacta a Andriux";
-            errorMsg.style.display = "block";
-            whatsappBtn.style.display = "inline-block";
-            whatsappBtn.href = "https://wa.me/573144474637?text=Hola%20Andriux%20quiero%20renovar%20mi%20servicio";
-            passInput.value = "";
-            passInput.focus();
+        if (ahoraColombia > expira) {
+            mostrarError("📅 Tu contraseña ha vencido, Contacta a Andriux", 
+                         "https://wa.me/573144474637?text=Hola%20Andriux%20quiero%20renovar%20mi%20servicio");
             return;
         }
 
@@ -105,15 +97,21 @@ function checkPassword() {
     })
     .catch(err => {
         console.error("Error cargando vip.json:", err);
-        errorMsg.innerText = "⚠️ Error cargando la base de datos.";
+        mostrarError("⚠️ Error ",
+                     "https://wa.me/573144474637");
+    });
+
+    function mostrarError(mensaje, enlace) {
+        errorMsg.innerText = mensaje;
         errorMsg.style.display = "block";
         whatsappBtn.style.display = "inline-block";
-        whatsappBtn.href = "https://wa.me/573144474637";
+        whatsappBtn.href = enlace;
         passInput.value = "";
         passInput.focus();
-    });
+    }
 }
 </script>
 
 </body>
 </html>
+
