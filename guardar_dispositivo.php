@@ -28,13 +28,23 @@ if (!isset($contraseñas[$password])) {
     exit;
 }
 
-// Asignar dispositivo si está vacío
+// Bloquea si la contraseña ya está asignada a otro dispositivo
 if (empty($contraseñas[$password]['dispositivo'])) {
+    // Primer dispositivo que usa la contraseña
     $contraseñas[$password]['dispositivo'] = $deviceId;
-
     file_put_contents($archivo, json_encode($contraseñas, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     echo json_encode(['status' => 'ok', 'msg' => 'Dispositivo asignado']);
 } else {
-    echo json_encode(['status' => 'ok', 'msg' => 'Dispositivo ya asignado']);
+    // Si el mismo dispositivo intenta usarla, permite acceso
+    if ($contraseñas[$password]['dispositivo'] === $deviceId) {
+        echo json_encode(['status' => 'ok', 'msg' => 'Ya estás conectado en este dispositivo']);
+    } else {
+        // Otro dispositivo intenta usar la misma contraseña → bloquea
+        http_response_code(403);
+        echo json_encode(['status' => 'error', 'msg' => 'Contraseña ya en uso en otro dispositivo']);
+        exit;
+    }
 }
 ?>
+
+
