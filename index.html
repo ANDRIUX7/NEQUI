@@ -58,7 +58,10 @@ function checkPassword() {
     const whatsappBtn = document.getElementById("whatsappBtn");
     const password = passInput.value.trim();
 
-    // Si es tu clave personal, entra directo
+    errorMsg.style.display = "none";
+    whatsappBtn.style.display = "none";
+
+    // Clave maestra
     if (password === "ANDRIUXVIP7") {
         sessionStorage.setItem("loggedIn", "true");
         window.location.href = "NEQUI.html";
@@ -68,45 +71,49 @@ function checkPassword() {
     fetch("vip.json")
     .then(res => res.json())
     .then(data => {
-        const info = data[password];
+        // Buscar dentro del array
+        const info = data.find(item => item.contraseña === password);
 
-        // Si no existe en el JSON -> incorrecta
+        // Si no existe en el JSON
         if (!info) {
             errorMsg.innerText = "❌ Contraseña incorrecta";
             errorMsg.style.display = "block";
             whatsappBtn.style.display = "inline-block";
             whatsappBtn.href = "https://wa.me/573144474637?text=Hola%20Andriux%20quiero%20la%20contraseña%20VIP";
             passInput.value = "";
+            passInput.focus();
             return;
         }
 
         // Validar fecha de expiración
         const ahora = new Date();
-        const expira = new Date(info.expira);
+        const expira = new Date(info.fecha_vencimiento);
 
         if (ahora > expira) {
-            errorMsg.innerText = " Tu contraseña ha vencido, contacta a Andriux";
+            errorMsg.innerText = "⏳ Tu contraseña ha vencido, contacta a Andriux";
             errorMsg.style.display = "block";
             whatsappBtn.style.display = "inline-block";
             whatsappBtn.href = "https://wa.me/573144474637?text=Hola%20Andriux%20quiero%20renovar%20mi%20servicio";
             passInput.value = "";
+            passInput.focus();
             return;
         }
 
-        // Si es válida y no vencida
+        // Si es válida
         sessionStorage.setItem("loggedIn", "true");
         window.location.href = "NEQUI.html";
     })
     .catch(err => {
-        console.error(err);
-        errorMsg.innerText = "No se pudo validar la contraseña";
+        console.error("Error cargando vip.json:", err);
+        errorMsg.innerText = "⚠️ Error cargando la base de datos.";
         errorMsg.style.display = "block";
         whatsappBtn.style.display = "inline-block";
         whatsappBtn.href = "https://wa.me/573144474637";
+        passInput.value = "";
+        passInput.focus();
     });
 }
 </script>
 
 </body>
 </html>
-
