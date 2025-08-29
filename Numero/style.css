@@ -1,0 +1,147 @@
+body {
+  background-color: #2b0a3d;
+  /* Dark purple background */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: white;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.top-icons {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.dynamic-key {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #3b0d49;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.dynamic-key i {
+  color: #ff4081;
+  /* Pink icon */
+}
+
+.dynamic-key span {
+  color: #cccccc;
+  /* Light gray text */
+  font-size: 0.875rem;
+}
+
+.dynamic-key .key-number {
+  color: white;
+  font-weight: bold;
+  font-size: 1.125rem;
+}
+
+.dynamic-key .copy-icon {
+  color: #999999;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5rem;
+}
+
+.logo .dot {
+  color: #ff4081;
+  /* Pink dot */
+  font-size: 6rem;
+  font-weight: bold;
+}
+
+.logo .text {
+  color: #cccccc;
+  /* Light gray text */
+  font-size: 6rem;
+  font-weight: bold;
+}
+
+.phone-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10rem;
+  width: 100%;
+  padding: 0 2rem;
+}
+
+.phone-input {
+  display: flex;
+  align-items: center;
+  background-color: #3b0d49;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 25rem;
+}
+
+.phone-input span {
+  color: #999999;
+  /* Gray text */
+}
+
+.phone-input input {
+  background: transparent;
+  margin-left: 0.5rem;
+  width: 100%;
+  color: #cccccc;
+  /* Light gray text */
+  border: none;
+  outline: none;
+}
+
+.enter-button {
+  background-color: #ff4081;
+  /* Pink button */
+  width: 100%;
+  max-width: 25rem;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
+
+.bottom-icons {
+  position: absolute;
+  bottom: 1rem;
+  display: flex;
+  gap: 2rem;
+}
+
+.bottom-icons .icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bottom-icons i {
+  color: #999999;
+  /* Gray icons */
+  font-size: 2rem;
+}
+
+.bottom-icons span {
+  color: #999999;
+  /* Gray text */
+  font-size: 0.875rem;
+}

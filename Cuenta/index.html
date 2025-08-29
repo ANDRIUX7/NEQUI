@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Nequi App</title>
+    <style>
+        .behind-purple {
+            z-index: -1;
+        }
+
+        .header-background {
+            background: linear-gradient(180deg, #210635 50%, #f50057 50%);
+            clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            z-index: -1;
+        }
+    </style>
+    <script>
+        function toggleBalance() {
+            const balanceElements = document.querySelectorAll('.balance');
+            balanceElements.forEach(element => {
+                if (element.textContent.includes('*')) {
+                    element.textContent = element.getAttribute('data-amount');
+                } else {
+                    element.textContent = '******';
+                }
+            });
+            const eyeIcon = document.getElementById('eyeIcon');
+            eyeIcon.classList.toggle('fa-eye-slash');
+            eyeIcon.classList.toggle('fa-eye');
+        }
+    </script>
+</head>
+
+<body class="bg-white font-sans relative">
+    <div class="header-background"></div>
+    <div class="bg-[#210635] p-4 relative">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="bg-black p-2 rounded-full">
+                    <i class="fab fa-neos text-white"></i>
+                </div>
+                <span class="text-white ml-2">Hola, <strong>Andriux</strong></span>
+            </div>
+            <div class="flex space-x-4 text-white">
+                <i class="fas fa-bell"></i>
+                <i class="fas fa-question-circle"></i>
+                <i class="fas fa-lock"></i>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <p class="text-white">Depósito Bajo Monto <i id="eyeIcon" class="fas fa-eye-slash"
+                    onclick="toggleBalance()"></i></p>
+            <h1 class="text-4xl text-white font-bold balance" data-amount="$ 1.000.000,00">$ 1.000.000,00</h1>
+            <p class="text-white balance" data-amount="Total $ 1.000.000,00">Total $ 1.000.000,00</p>
+            <button class="mt-2 bg-gray-700 text-white px-4 py-1 rounded-full">Tu plata <i
+                    class="fas fa-caret-down"></i></button>
+        </div>
+    </div>
+
+    <div class="p-4">
+        <div class="mb-4">
+            <h2 class="text-gray-500 mb-2">Tus favoritos</h2>
+            <div class="grid grid-cols-4 gap-4">
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-credit-card text-[#e6007e] text-2xl"></i>
+                    <span class="text-sm">Tarjeta</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-bed text-[#e6007e] text-2xl"></i>
+                    <span class="text-sm">Colchón</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-wallet text-[#e6007e] text-2xl"></i>
+                    <span class="text-sm">Bolsillos</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-piggy-bank text-[#e6007e] text-2xl"></i>
+                    <span class="text-sm">Metas</span>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2 class="text-gray-500 mb-2">Sugeridos Nequi</h2>
+            <div class="grid grid-cols-4 gap-4">
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-mobile-alt text-[#e6007e] text-2xl"></i>
+                    <span class="text-sm">Recarga de celular</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-credit-card text-[#e6007e] text-2xl"></i>
+                    <span class="text-sm">Tarjeta</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-file-invoice text-[#e6007e] text-2xl"></i>
+                    <span class="text-sm">Otras facturas</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-hand-holding-usd text-[#e6007e] text-2xl"></i>
+                    <span class="text-sm">Préstamos</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed bottom-0 left-0 right-0 bg-white shadow-md">
+        <div class="flex justify-around py-2">
+            <div class="flex flex-col items-center text-[#e6007e]">
+                <i class="fas fa-home text-2xl"></i>
+                <span class="text-xs">Inicio</span>
+            </div>
+            <div class="flex flex-col items-center text-gray-400">
+                <i class="fas fa-exchange-alt text-2xl"></i>
+                <span class="text-xs">Movimientos</span>
+            </div>
+            <div class="flex flex-col items-center text-gray-400">
+                <i class="fas fa-cogs text-2xl"></i>
+                <span class="text-xs">Servicios</span>
+            </div>
+            <div class="flex flex-col items-center text-gray-400">
+                <a href="file:///C:/Users/CASTI/Downloads/Enviar%20Apart/index.html" target="_blank" class="flex flex-col items-center text-gray-400">
+                    <i class="fas fa-dollar-sign text-2xl"></i>
+                    <span class="text-xs">Enviar</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
