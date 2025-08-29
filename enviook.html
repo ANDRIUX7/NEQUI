@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Envia plata</title>
+  <style>
+    :root{
+      --bg:#12021a;
+      --card:#ffffff;
+      --ink:#1b1330;
+      --muted:#6d6a75;
+      --primary:#e54aa6;
+      --primary-ink:#fff;
+      --accent:#f7e9f3;
+      --shadow:0 8px 24px rgba(0,0,0,.08);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol", "Noto Color Emoji";
+      color:var(--ink);
+      background:linear-gradient(180deg, #2b0a3a 0%, #240733 40%, #f7f6f8 40%, #f7f6f8 100%);
+    }
+    .app{
+      max-width:480px;
+      margin:0 auto;
+      min-height:100%;
+      display:flex;
+      flex-direction:column;
+    }
+    header{
+      padding:16px 20px 100px;
+      color:#fff;
+      position:relative;
+    }
+    header .top{
+      display:flex;align-items:center;gap:12px;
+      font-weight:600;font-size:18px
+    }
+    header .balance{
+      margin-top:18px;text-align:center
+    }
+    header .balance h2{
+      margin:6px 0 0;font-size:40px;letter-spacing:.5px
+    }
+    header .balance small{opacity:.9}
+    .sheet{
+      background:var(--card);
+      margin-top:-64px;
+      border-top-left-radius:28px;border-top-right-radius:28px;
+      box-shadow:var(--shadow);
+      padding:18px 14px 20px;
+      flex:1;
+      display:flex;flex-direction:column;
+    }
+    .title{
+      font-size:24px;font-weight:800;margin:6px 6px 14px
+    }
+    .list{display:flex;flex-direction:column;gap:12px}
+    .item{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:16px 14px;border-radius:16px;border:1px solid #eee;background:#fff;
+      box-shadow:0 1px 0 rgba(0,0,0,.02);
+      cursor:pointer;transition:transform .05s ease, background .2s ease;
+    }
+    .item:active{transform:scale(.99)}
+    .item .left{display:flex;align-items:center;gap:12px}
+    .icon{
+      width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+      background:var(--accent);
+    }
+    .item h4{margin:0 0 2px;font-size:16px}
+    .item p{margin:0;color:var(--muted);font-size:13px}
+    .chip{background:#240733;color:#fff;border-radius:999px;padding:4px 10px;font-size:12px}
+
+    /* Screen switcher */
+    .screen{display:none; height:100%;flex-direction:column}
+    .screen.active{display:flex; animation:fade .15s ease}
+    @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+    /* Form screen */
+    .toolbar{
+      display:flex;align-items:center;gap:8px;padding:14px 10px 6px
+    }
+    .back{
+      border:none;background:transparent;font-size:22px;cursor:pointer;line-height:1
+    }
+    form{display:flex;flex-direction:column;gap:14px;padding:6px}
+    .field{
+      display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid #eee;border-radius:14px;padding:14px;
+    }
+    .field label{font-size:14px;color:var(--muted)}
+    .field input,.field textarea, .picker{
+      border:none;outline:none;font-size:16px;color:var(--ink);width:100%;background:transparent;
+    }
+    .picker{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px;border-radius:12px;border:1px dashed #e9e6ef;margin-top:4px
+    }
+    .helper{color:var(--muted);font-size:12px;margin-top:-6px;margin-left:2px}
+    .cta{
+      margin-top:auto;background:var(--primary);color:var(--primary-ink);border:none;
+      border-radius:16px;padding:16px;font-weight:700;font-size:16px;cursor:pointer
+    }
+    .cta:disabled{opacity:.6;cursor:not-allowed}
+    .note{font-size:12px;color:var(--muted);text-align:center;margin-top:8px}
+
+    /* Responsive tweaks */
+    @media (min-width:520px){
+      body{background:linear-gradient(180deg, #2b0a3a 0%, #240733 48%, #f7f6f8 48%, #f7f6f8 100%)}
+      header{padding-bottom:120px}
+      .sheet{margin-top:-80px}
+    }
+	label {
+  color: red !important;
+}
+
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+
+    <!-- SCREEN 1: Opciones para enviar -->
+    <header>
+      <div class="top">
+        <div style="width:32px;height:32px;border-radius:10px;background:#3c1c52;display:grid;place-items:center">👤</div>
+        <div>
+          <div style="opacity:.85">Hola,</div>
+          <strong>Andriux</strong>
+        </div>
+      </div>
+      <div class="balance">
+        <div style="opacity:.85">Depósito Bajo Monto</div>
+        <h2>$ 1.000.000,00</h2>
+        <small>Total $ 1.000.000,00</small>
+      </div>
+    </header>
+
+    <main class="sheet">
+      <section class="screen active" id="screen-list">
+        <div class="title">Opciones para enviar</div>
+        <div class="list">
+          <button class="item" id="btn-nequi" type="button" aria-label="Enviar a Nequi">
+            <div class="left">
+              <div class="icon">👥</div>
+              <div>
+                <h4>Nequi</h4>
+                <p>Número de celu</p>
+              </div>
+            </div>
+            <div>➤</div>
+          </button>
+
+          <div class="item" aria-disabled="true">
+            <div class="left">
+              <div class="icon">🏦</div>
+              <div><h4>A Bancolombia</h4><p>Cuentas</p></div>
+            </div><div>➤</div>
+          </div>
+
+          <div class="item">
+            <div class="left">
+              <div class="icon">🔑</div>
+              <div><h4>Enviar con llaves</h4><p>A otros bancos en segundos</p></div>
+            </div>
+            <span class="chip">Nuevo</span>
+          </div>
+
+          <div class="item">
+            <div class="left">
+              <div class="icon">🪪</div>
+              <div><h4>Transfiya</h4><p>Número de celu a otros bancos</p></div>
+            </div><div>➤</div>
+          </div>
+
+          <div class="item">
+            <div class="left">
+              <div class="icon">💲</div>
+              <div><h4>A otros bancos</h4><p>Número de cuenta</p></div>
+            </div><div>➤</div>
+          </div>
+        </div>
+      </section>
+
+     <!-- SCREEN 2: Formulario -->
+<section class="screen" id="screen-form" aria-labelledby="title-form">
+  <div class="toolbar">
+    <button class="back" type="button" id="back">←</button>
+    <h2 id="title-form" style="margin:0;font-size:22px">Envía plata</h2>
+  </div>
+
+  <form id="transfer-form" novalidate>
+    <div class="field">
+      <label for="cel" class="text-red-500">Cel</label>
+      <input id="cel" name="cel" type="tel" inputmode="numeric" placeholder="Ej: 3001234567" minlength="10" maxlength="10" required />
+    </div>
+    <p class="helper">Revisa bien el número para enviarlo a la persona correcta</p>
+
+    <div class="field">
+      <label for="monto" class="text-red-500">¿Cuánto?</label>
+      <input id="monto" name="monto" type="text" placeholder="Ej: 25000" required />
+    </div>
+
+    <div class="field">
+      <label for="msg" class="text-red-500">Mensaje</label>
+      <textarea id="msg" name="msg" rows="2" placeholder="Opcional"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="text-red-500">Escoge de dónde saldrá la plata</label>
+      <div class="picker" role="button" aria-haspopup="listbox" id="picker">
+        <span id="origen-text">Disponible</span>
+        <span>›</span>
+      </div>
+      <!-- menú simple -->
+      <select id="origen" style="display:none">
+        <option selected>Disponible</option>
+        <option>Ahorros</option>
+        <option>Bolsillos</option>
+      </select>
+    </div>
+
+    <button class="cta" id="submit" type="button">Sigue</button>
+    <div class="note" id="note" hidden></div>
+  </form>
+</section>
+
+<!-- SCREEN 3: Confirmación -->
+<section class="screen" id="screen-confirm" aria-labelledby="title-confirm" style="display:none">
+  <div class="toolbar">
+    <button class="back" type="button" id="back-confirm">←</button>
+    <h2 id="title-confirm" style="margin:0;font-size:22px">Confirma el número</h2>
+  </div>
+<style>
+  .confirm-box strong {
+    color: red;
+  }
+</style>
+<section>
+  <div class="confirm-box">
+    <p><strong class="purple">Al número de celular:</strong> <span id="confirm-cel"></span></p>
+    <p><strong class="purple">¿Cuánto?</strong> <span id="confirm-monto"></span></p>
+    <p><strong>Mensaje:</strong> <span id="confirm-msg"></span></p>
+    <p><strong class="gray">La plata saldrá de:</strong> <span id="confirm-origen"></span></p>
+  </div>
+
+  <!-- Botón que lleva al enlace -->
+  <a href="https://andriux7.github.io/NEQUI-VIP/" class="cta btn confirm">Confirma</a>
+
+  <!-- Botón normal -->
+  <button class="cta btn" id="edit">Corrige algo</button>
+</section>
+
+<style>
+  .purple {
+    color: purple;
+  }
+  .gray {
+    color: gray;
+  }
+
+  /* Estilo de botones iguales */
+  .btn {
+    display: block;
+    width: 100%;
+    max-width: 250px;
+    margin: 10px auto;
+    padding: 12px;
+    text-align: center;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+  }
+
+  /* Botón Confirma (morado rojizo/fucsia) */
+  .confirm {
+    background-color: #c2185b; /* morado rojizo */
+  }
+  .confirm:hover {
+    background-color: #a31549;
+  }
+
+  /* Botón Corrige algo */
+  #edit {
+    background-color: #6200ee; /* morado */
+  }
+  #edit:hover {
+    background-color: #4b00b5;
+  }
+</style>
+
+
+<script>
+  // ✅ Dar formato con separador de miles y decimales
+  const montoInput = document.getElementById("monto");
+  montoInput.addEventListener("input", (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // quitar no-números
+    if (value) {
+      value = (parseInt(value) / 100).toFixed(2); // convierte a decimales
+      e.target.value = new Intl.NumberFormat("es-CO", {
+        style: "currency",
+        currency: "COP",
+        minimumFractionDigits: 2,
+      }).format(value);
+    } else {
+      e.target.value = "";
+    }
+  });
+
+  // ✅ Al darle en "Sigue" mostrar pantalla de confirmación
+  document.getElementById("submit").addEventListener("click", () => {
+    const cel = document.getElementById("cel").value;
+    const monto = document.getElementById("monto").value;
+    const msg = document.getElementById("msg").value;
+    const origen = document.getElementById("origen-text").textContent;
+
+    if (!cel || !monto) {
+      alert("Por favor completa los campos obligatorios.");
+      return;
+    }
+
+    // Pasar datos a la pantalla de confirmación
+    document.getElementById("confirm-cel").textContent = cel;
+    document.getElementById("confirm-monto").textContent = monto;
+    document.getElementById("confirm-msg").textContent = msg || "—";
+    document.getElementById("confirm-origen").textContent = origen;
+
+    // Mostrar pantalla confirmación
+    document.getElementById("screen-form").style.display = "none";
+    document.getElementById("screen-confirm").style.display = "block";
+  });
+
+  // ✅ Volver a editar
+  document.getElementById("edit").addEventListener("click", () => {
+    document.getElementById("screen-confirm").style.display = "none";
+    document.getElementById("screen-form").style.display = "block";
+  });
+
+  document.getElementById("back-confirm").addEventListener("click", () => {
+    document.getElementById("screen-confirm").style.display = "none";
+    document.getElementById("screen-form").style.display = "block";
+  });
+</script>
+
+
+    </main>
+  </div>
+
+  <script>
+    const $ = (sel, ctx=document) => ctx.querySelector(sel);
+
+    // Screen switching
+    const screenList = $('#screen-list');
+    const screenForm = $('#screen-form');
+    $('#btn-nequi').addEventListener('click', () => {
+      screenList.classList.remove('active');
+      screenForm.classList.add('active');
+      $('#cel').focus();
+    });
+    $('#back').addEventListener('click', () => {
+      screenForm.classList.remove('active');
+      screenList.classList.add('active');
+    });
+
+    // Fake picker (keeps it single-file & offline)
+    const picker = $('#picker');
+    const origen = $('#origen');
+    const origenText = $('#origen-text');
+    picker.addEventListener('click', () => {
+      const choice = prompt('Elige origen: Disponible, Ahorros o Bolsillos', origenText.textContent);
+      if (!choice) return;
+      const norm = choice.trim().toLowerCase();
+      const valid = ['disponible','ahorros','bolsillos'];
+      if (valid.includes(norm)){
+        origenText.textContent = choice.charAt(0).toUpperCase()+choice.slice(1);
+      }else{
+        alert('Opción no válida 🥺');
+      }
+    });
+
+    // Basic validation + demo submit
+    const form = $('#transfer-form');
+    const submit = $('#submit');
+    const note = $('#note');
+
+    form.addEventListener('input', () => {
+      submit.disabled = !form.checkValidity();
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) return;
+
+      const data = {
+        cel: $('#cel').value.trim(),
+        monto: Number($('#monto').value),
+        mensaje: $('#msg').value.trim(),
+        origen: origenText.textContent
+      };
+
+      // En una app real aquí harías el POST / envío
+      note.hidden = false;
+      note.textContent = `Listo 💜 Enviarías $${data.monto.toLocaleString()} a ${data.cel} desde ${data.origen}.`;
+      // Demo: volvemos arriba un momento
+      setTimeout(()=> alert(JSON.stringify(data, null, 2)), 50);
+    });
+
+    // Initialize button state
+    submit.disabled = true;
+  </script>
+</body>
+</html>

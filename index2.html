@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nequi</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body class="bg-purple">
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Title -->
+        <h1>Ingresa tu clave</h1>
+        <!-- Input Boxes -->
+        <div class="input-boxes">
+            <div class="input-box" id="box1"></div>
+            <div class="input-box" id="box2"></div>
+            <div class="input-box" id="box3"></div>
+            <div class="input-box" id="box4"></div>
+        </div>
+        <!-- Subtitle -->
+        <p>No dudamos que seas tú... <br> Pero es mejor confirmar ;).</p>
+        <!-- Number Pad -->
+        <div class="number-pad">
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <button><i class="fas fa-undo-alt"></i></button>
+            <button>0</button>
+            <button><i class="fas fa-backspace"></i></button>
+        </div>
+        <!-- Submit Button -->
+        <a href="file:///C:/Users/CASTI/Downloads/Cuenta/index.html"
+            class="submit-btn">Ingresar</a>
+    </div>
+
+    <script>
+        const inputBoxes = document.querySelectorAll('.input-box');
+        const numberButtons = document.querySelectorAll('.number-pad button');
+
+        numberButtons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                if (index === 9) { // Si se hace clic en el botón de borrado
+                    for (let i = inputBoxes.length - 1; i >= 0; i--) {
+                        if (inputBoxes[i].innerHTML === '•') {
+                            inputBoxes[i].innerHTML = '';
+                            break;
+                        }
+                    }
+                } else if (index === 11) { // Si se hace clic en el botón de retroceso
+                    for (let i = inputBoxes.length - 1; i >= 0; i--) {
+                        if (inputBoxes[i].innerHTML !== '') {
+                            inputBoxes[i].innerHTML = '';
+                            break;
+                        }
+                    }
+                } else { // Si se hace clic en cualquier otro botón de número
+                    for (let i = 0; i < inputBoxes.length; i++) {
+                        if (inputBoxes[i].innerHTML === '') {
+                            inputBoxes[i].innerHTML = '<span class="pink-asterisk">*</span>';
+                            break;
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
